@@ -2,12 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Atelier Artistique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L'Atelier Artistique - Kaléidoscope Magique</title>
     <style>
         :root {
-            --primary: #4a6fa5;
-            --bg-site: #111116; /* Fond sombre global pour une meilleure immersion */
+            --bg-site: #111116; 
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -19,65 +22,79 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             overflow: hidden;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         header {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             text-align: center;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             z-index: 10;
         }
 
         h1 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #2c3e50;
         }
 
         .subtitle {
             margin: 3px 0 0 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #7f8c8d;
         }
 
+        #main-wrapper {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            min-height: 0; /* Empêche le débordement flex */
+        }
+
         #canvas-container {
-            position: relative;
             flex: 1;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 0; 
         }
 
         canvas {
             display: block;
             cursor: crosshair;
+            background-color: #111116;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
 
-        /* BARRE D'OUTILS RESPONSIVE */
         #toolbar {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
             padding: 12px 20px;
-            border-radius: 30px;
+            border-radius: 25px;
             display: flex;
-            flex-wrap: wrap; /* Permet le passage à la ligne si l'écran est trop étroit */
             gap: 15px;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
             z-index: 10;
             backdrop-filter: blur(5px);
             width: auto;
-            max-width: 90%; /* Évite de déborder sur les côtés */
+            max-width: 95%;
+            margin-bottom: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
         }
 
         .btn {
@@ -88,7 +105,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
-            white-space: nowrap; /* Empêche le texte du bouton de se couper en deux */
+            white-space: nowrap;
         }
 
         .btn:active {
@@ -110,8 +127,6 @@
         .color-palette {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
         .color-opt {
@@ -121,7 +136,7 @@
             cursor: pointer;
             border: 3px solid transparent;
             transition: transform 0.2s;
-            box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
         }
 
         .color-opt.active {
@@ -129,32 +144,34 @@
             transform: scale(1.1);
         }
 
-        /* ADAPTATION SPÉCIFIQUE POUR LES SMARTPHONES (ÉCRANS < 600px) */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             #toolbar {
-                flex-direction: column; /* Aligne la palette au-dessus des boutons */
-                gap: 10px;
-                padding: 10px 15px;
-                border-radius: 20px;
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px;
+                width: 90%;
             }
 
-            .action-buttons {
-                display: flex;
-                gap: 10px;
-                width: 100%;
+            .color-palette {
+                flex-wrap: wrap;
                 justify-content: center;
-            }
-
-            .btn {
-                padding: 8px 14px;
-                font-size: 0.85rem;
-                flex: 1; /* Les deux boutons prennent la même largeur sur mobile */
-                text-align: center;
+                gap: 10px;
             }
 
             .color-opt {
-                width: 28px; /* Légère réduction des pastilles pour que tout tienne sur une ligne mobile */
-                height: 28px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .action-buttons {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+                padding: 12px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -162,18 +179,21 @@
 <body>
 
     <header>
-        <h1> &#127881 Bienvenue dans l'atelier artistique &#127880</h1>
-       <h3> 🎨Aujourd'hui : le Kaléidoscope Magique</h3> 
-        <p class="subtitle">Choisissez une couleur et créez une œuvre d'art unique (et symétrique)</p>
+        <h1>🎨 Le Kaléidoscope Magique</h1>
+        <p class="subtitle">Bougez la souris ou glissez le doigt pour créer une œuvre d'art symétrique</p>
     </header>
 
-    <div id="canvas-container">
-        <canvas id="kaleidoscopeCanvas"></canvas>
+    <div id="main-wrapper">
+        <div id="canvas-container">
+            <canvas id="kaleidoscopeCanvas"></canvas>
+        </div>
         
         <div id="toolbar">
             <div class="color-palette" id="palette"></div>
-            <button class="btn btn-clear" id="clearBtn">✨ Effacer tout</button>
-            <a href="https://pierreg78-maker.github.io/Atelier/" class="btn btn-back">🏠 Retour à l'Atelier</a>
+            <div class="action-buttons">
+                <button class="btn btn-clear" id="clearBtn">✨ Effacer</button>
+                <a href="https://pierreg78-maker.github.io/Atelier/" class="btn btn-back">🏠 Retour</a>
+            </div>
         </div>
     </div>
 
@@ -184,9 +204,8 @@
         const clearBtn = document.getElementById('clearBtn');
         const paletteContainer = document.getElementById('palette');
 
-        // Configuration
         const symetrie = 8; 
-        let estEnTrainDeDessiner = false; // Correction de l'espace ici !
+        let estEnTrainDeDessiner = false; 
         let couleurCourante = '#00ffcc';
         let derniereX = 0;
         let derniereY = 0;
@@ -194,7 +213,6 @@
 
         const couleurs = ['#00ffcc', '#ff0055', '#ffcc00', '#9b59b6', '#3498db', '#2ecc71', '#ffffff'];
 
-        // Initialisation de la palette
         couleurs.forEach((couleur, index) => {
             const opt = document.createElement('div');
             opt.className = `color-opt ${index === 0 ? 'active' : ''}`;
@@ -208,7 +226,12 @@
         });
 
         function redimensionner() {
-            const taille = Math.min(container.clientWidth, container.clientHeight) - 40;
+            // Recalcul strict et dynamique de l'espace carré disponible au pixel près
+            const marge = 20;
+            const tailleMaxX = container.clientWidth - marge;
+            const tailleMaxY = container.clientHeight - marge;
+            const taille = Math.max(100, Math.min(tailleMaxX, tailleMaxY));
+            
             canvas.width = taille;
             canvas.height = taille;
             
@@ -299,7 +322,7 @@
         clearBtn.addEventListener('click', effacerCanvas);
         window.addEventListener('resize', redimensionner);
 
-        setTimeout(redimensionner, 100);
+        setTimeout(redimensionner, 150);
     </script>
 </body>
 </html>
