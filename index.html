@@ -226,16 +226,11 @@
         });
 
         function redimensionner() {
-            const header = document.querySelector('header');
-            const toolbar = document.getElementById('toolbar');
+            // Recalcul strict et dynamique de l'espace carré disponible au pixel près
             const marge = 20;
-
-            const hauteurHeader = header.offsetHeight;
-            const hauteurToolbar = toolbar.offsetHeight;
-            const hauteurDispo = window.innerHeight - hauteurHeader - hauteurToolbar - marge * 2;
-            const largeurDispo = container.clientWidth - marge;
-
-            const taille = Math.max(100, Math.min(largeurDispo, hauteurDispo));
+            const tailleMaxX = container.clientWidth - marge;
+            const tailleMaxY = container.clientHeight - marge;
+            const taille = Math.max(100, Math.min(tailleMaxX, tailleMaxY));
             
             canvas.width = taille;
             canvas.height = taille;
