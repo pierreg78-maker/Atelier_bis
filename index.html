@@ -52,7 +52,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #111116; /* Fond sombre pour faire ressortir les couleurs */
+            background-color: #111116;
         }
 
         canvas {
@@ -61,7 +61,6 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* Barre d'outils simplifiée et très visible */
         #toolbar {
             position: absolute;
             bottom: 20px;
@@ -106,7 +105,6 @@
             padding: 10px 20px;
         }
 
-        /* Palette de couleurs magique (très lumineuse) */
         .color-palette {
             display: flex;
             gap: 10px;
@@ -138,8 +136,7 @@
         <canvas id="kaleidoscopeCanvas"></canvas>
         
         <div id="toolbar">
-            <div class="color-palette" id="palette">
-                </div>
+            <div class="color-palette" id="palette"></div>
             <button class="btn btn-clear" id="clearBtn">✨ Effacer tout</button>
             <a href="https://pierreg78-maker.github.io/Atelier/" class="btn btn-back">🏠 Retour à l'Atelier</a>
         </div>
@@ -152,18 +149,17 @@
         const clearBtn = document.getElementById('clearBtn');
         const paletteContainer = document.getElementById('palette');
 
-        // Configuration du jeu
-        const symetrie = 8; // Nombre de segments du kaléidoscope
-        let est EnTrainDeDessiner = false;
+        // Configuration
+        const symetrie = 8; 
+        let estEnTrainDeDessiner = false; // Correction de l'espace ici !
         let couleurCourante = '#00ffcc';
         let derniereX = 0;
         let derniereY = 0;
         let epaisseurLigne = 5;
 
-        // Palette de couleurs adaptées et lumineuses (Fluo sur fond noir)
         const couleurs = ['#00ffcc', '#ff0055', '#ffcc00', '#9b59b6', '#3498db', '#2ecc71', '#ffffff'];
 
-        // Initialisation de la palette visuelle
+        // Initialisation de la palette
         couleurs.forEach((couleur, index) => {
             const opt = document.createElement('div');
             opt.className = `color-opt ${index === 0 ? 'active' : ''}`;
@@ -176,13 +172,11 @@
             paletteContainer.appendChild(opt);
         });
 
-        // Redimensionner le canvas pour qu'il s'adapte à l'écran
         function redimensionner() {
             const taille = Math.min(container.clientWidth, container.clientHeight) - 40;
             canvas.width = taille;
             canvas.height = taille;
             
-            // Replacer le centre du repère au milieu du canvas
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -192,13 +186,11 @@
 
         function effacerCanvas() {
             ctx.save();
-            // Effacer en tenant compte du repère déplacé au centre
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.restore();
         }
 
-        // Fonction maîtresse qui dessine la symétrie du Kaléidoscope
         function dessinerTrace(x1, y1, x2, y2) {
             ctx.strokeStyle = couleurCourante;
             ctx.lineWidth = epaisseurLigne;
@@ -206,13 +198,11 @@
             for (let i = 0; i < symetrie; i++) {
                 ctx.rotate((Math.PI * 2) / symetrie);
                 
-                // Dessin du trait d'origine dans le segment actuel
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
 
-                // Dessin de l'effet miroir inversé pour une vraie symétrie
                 ctx.save();
                 ctx.scale(1, -1);
                 ctx.beginPath();
@@ -223,7 +213,6 @@
             }
         }
 
-        // Obtenir les coordonnées par rapport au centre du canvas
         function obtenirCoordonnees(evenement) {
             const rect = canvas.getBoundingClientRect();
             let clientX, clientY;
@@ -236,14 +225,12 @@
                 clientY = evenement.clientY;
             }
 
-            // Calcul par rapport au centre du canvas (0,0 au milieu)
             return {
                 x: clientX - rect.left - canvas.width / 2,
                 y: clientY - rect.top - canvas.height / 2
             };
         }
 
-        // Événements de souris et tactiles
         function actionDebut(e) {
             estEnTrainDeDessiner = true;
             const coords = obtenirCoordonnees(e);
@@ -253,7 +240,7 @@
 
         function actionMouvement(e) {
             if (!estEnTrainDeDessiner) return;
-            e.preventDefault(); // Évite le défilement de page sur tablette
+            e.preventDefault(); 
             
             const coords = obtenirCoordonnees(e);
             dessinerTrace(derniereX, derniereY, coords.x, coords.y);
@@ -266,7 +253,6 @@
             estEnTrainDeDessiner = false;
         }
 
-        // Écouteurs d'événements
         canvas.addEventListener('mousedown', actionDebut);
         canvas.addEventListener('mousemove', actionMouvement);
         window.addEventListener('mouseup', actionFin);
@@ -278,7 +264,6 @@
         clearBtn.addEventListener('click', effacerCanvas);
         window.addEventListener('resize', redimensionner);
 
-        // Lancement initial
         setTimeout(redimensionner, 100);
     </script>
 </body>
