@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary: #4a6fa5;
-            --bg-site: #f4f0e6;
+            --bg-site: #111116; /* Fond sombre global pour une meilleure immersion */
         }
 
         body {
@@ -26,22 +26,22 @@
 
         header {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 10;
         }
 
         h1 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #2c3e50;
         }
 
         .subtitle {
-            margin: 5px 0 0 0;
-            font-size: 1rem;
+            margin: 3px 0 0 0;
+            font-size: 0.9rem;
             color: #7f8c8d;
         }
 
@@ -52,39 +52,43 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #111116;
         }
 
         canvas {
             display: block;
             cursor: crosshair;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
+        /* BARRE D'OUTILS RESPONSIVE */
         #toolbar {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 15px 25px;
-            border-radius: 50px;
+            padding: 12px 20px;
+            border-radius: 30px;
             display: flex;
+            flex-wrap: wrap; /* Permet le passage à la ligne si l'écran est trop étroit */
             gap: 15px;
             align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             z-index: 10;
             backdrop-filter: blur(5px);
+            width: auto;
+            max-width: 90%; /* Évite de déborder sur les côtés */
         }
 
         .btn {
             border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 1rem;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s;
+            white-space: nowrap; /* Empêche le texte du bouton de se couper en deux */
         }
 
         .btn:active {
@@ -101,27 +105,57 @@
             color: white;
             text-decoration: none;
             display: inline-block;
-            font-size: 0.9rem;
-            padding: 10px 20px;
         }
 
         .color-palette {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .color-opt {
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
             transition: transform 0.2s;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
         }
 
         .color-opt.active {
             border-color: #333;
             transform: scale(1.1);
+        }
+
+        /* ADAPTATION SPÉCIFIQUE POUR LES SMARTPHONES (ÉCRANS < 600px) */
+        @media (max-width: 600px) {
+            #toolbar {
+                flex-direction: column; /* Aligne la palette au-dessus des boutons */
+                gap: 10px;
+                padding: 10px 15px;
+                border-radius: 20px;
+            }
+
+            .action-buttons {
+                display: flex;
+                gap: 10px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+                flex: 1; /* Les deux boutons prennent la même largeur sur mobile */
+                text-align: center;
+            }
+
+            .color-opt {
+                width: 28px; /* Légère réduction des pastilles pour que tout tienne sur une ligne mobile */
+                height: 28px;
+            }
         }
     </style>
 </head>
@@ -129,7 +163,7 @@
 
     <header>
         <h1> &#127881 Bienvenue dans l'atelier artistique &#127880</h1>
-       <h3> 🎨Le Kaléidoscope Magique</h3> 
+       <h3> 🎨Aujourd'hui : le Kaléidoscope Magique</h3> 
         <p class="subtitle">Choisissez une couleur et créez une œuvre d'art unique (et symétrique)</p>
     </header>
 
